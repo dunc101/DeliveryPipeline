@@ -1,12 +1,26 @@
 node {
     echo "Building ------> build${env.BUILD_NUMBER}"
-    def giturl = "https://github.com/dunc101/osdemo4.git"
+    /*def giturl = "https://github.com/dunc101/osdemo4.git"
     def pomdirectory = "osdemo4"
     def app = "osdemo4"
     def readinessprobe = "http://localhost:8080/health"
     def livenessprobe = "http://localhost:8080/health"
     def replicas = "3"
-    
+    */
+	
+	Properties properties = new Properties()
+	File propertiesFile = new File('deliverypipeline.properties')
+	propertiesFile.withInputStream {
+		properties.load(it)
+	}
+	def giturl = properties."repourl"
+	def pomdirectory = properties."pomdirectory"
+	def app = properties."app"
+	def readinessprobe = properties."readinessprobe"
+	def livenessprobe = properties."livenessprobe"
+	def replicas = properties."replicas"
+    println "RepoUrl -> $giturl\nPom Directory -> $pomdirectory\nApplication -> $app\nReadiness Probe -> $readinessprobe\nLiveness Probe -> $livenessprobe\nReplicas -> $replicas"
+	
     stage 'Checkout and Build'
     build job: 'demo-checkoutandbuild', parameters: [[$class: 'StringParameterValue', name: 'GITURL', value: "$giturl"], [$class: 'StringParameterValue', name: 'POMDIRECTORY', value: "$pomdirectory"], [$class: 'StringParameterValue', name: 'APP', value: "$app"], [$class: 'StringParameterValue', name: 'TAG', value: "build${env.BUILD_NUMBER}"]]
     

@@ -8,11 +8,10 @@ node {
     def replicas = "3"
     */
 	
-	Properties properties = new Properties()
-	File propertiesFile = new File('deliverypipeline.properties')
-	propertiesFile.withInputStream {
-		properties.load(it)
-	}
+	def file = readFile("deliverypipeline.properties")
+	def sr = new StringReader(file)
+	def properties = new Properties()
+	properties.load(sr)
 	def giturl = properties."repourl"
 	def pomdirectory = properties."pomdirectory"
 	def app = properties."app"

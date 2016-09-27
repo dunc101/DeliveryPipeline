@@ -7,7 +7,7 @@ node {
     def livenessprobe = "http://localhost:8080/health"
     def replicas = "3"
     */
-	sh "ls -lart osdemo4/"
+	sh "ls -lart /var/lib/jenkins/jobs/openshiftdemodd-configmaps/jobs/osdemo4/workspace"
 	sh "pwd"
 	def file = readFile("deliverypipeline.properties")
 	//def sr = new StringReader(file)

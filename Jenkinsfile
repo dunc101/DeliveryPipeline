@@ -7,9 +7,9 @@ node {
     def livenessprobe = "http://localhost:8080/health"
     def replicas = "3"
     */
-	sh "ls -lart ../"
+	sh "ls -lart ../workspace/osdemo4/"
 	sh "pwd"
-	def file = readFile("../workspace/deliverypipeline.properties")
+	def file = readFile("../workspace/osdemo4/deliverypipeline.properties")
 	//def sr = new StringReader(file)
 	//def properties = new Properties()
 	//properties.load(sr)

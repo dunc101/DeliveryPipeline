@@ -10,18 +10,19 @@ node {
 	sh "ls -lart ../workspace/osdemo4/"
 	sh "pwd"
 	def file = readFile("../workspace/osdemo4/deliverypipeline.properties")
+	println $file
 	//def sr = new StringReader(file)
 	//def properties = new Properties()
 	//properties.load(sr)
 	
-	def giturl = properties."repourl"
+	/*def giturl = properties."repourl"
 	def pomdirectory = properties."pomdirectory"
 	def app = properties."app"
 	def readinessprobe = properties."readinessprobe"
 	def livenessprobe = properties."livenessprobe"
 	def replicas = properties."replicas"
     println "RepoUrl -> $giturl\nPom Directory -> $pomdirectory\nApplication -> $app\nReadiness Probe -> $readinessprobe\nLiveness Probe -> $livenessprobe\nReplicas -> $replicas"
-	
+	*/
     stage 'Checkout and Build'
     build job: 'demo-checkoutandbuild', parameters: [[$class: 'StringParameterValue', name: 'GITURL', value: "$giturl"], [$class: 'StringParameterValue', name: 'POMDIRECTORY', value: "$pomdirectory"], [$class: 'StringParameterValue', name: 'APP', value: "$app"], [$class: 'StringParameterValue', name: 'TAG', value: "build${env.BUILD_NUMBER}"]]
     

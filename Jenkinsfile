@@ -1,31 +1,20 @@
 node {
-    echo "Building ------> build${env.BUILD_NUMBER}"
-    /*def giturl = "https://github.com/dunc101/osdemo4.git"
-    def pomdirectory = "osdemo4"
-    def app = "osdemo4"
-    def readinessprobe = "http://localhost:8080/health"
-    def livenessprobe = "http://localhost:8080/health"
-    def replicas = "3"
-    */
+    /********** DO NOT REMOVE BELOW!!! *******/
+	VARIABLES_SECTION
+	/********** DO NOT REMOVE ABOVE!!! *******/
 	
-	def file = readFile("../workspace/osdemo4/deliverypipeline.properties")
-	println "$file"
-	def repourl= "cat $file | grep repourl".execute().text
-	println "$repourl"
-	//def sr = new StringReader(file)
-	//def properties = new Properties()
-	//properties.load(sr)
+	/************************************************************************
+	** def repourl = properties."repourl"                                  **
+	** def pomdirectory = properties."pomdirectory"                        **
+	** def app = properties."app"                                          **
+	** def readinessprobe = properties."readinessprobe"                    **
+	** def livenessprobe = properties."livenessprobe"                      **
+	** def replicas = properties."replicas"                                **
+	*************************************************************************/
+    println "RepoUrl -> $repourl\nPom Directory -> $pomdirectory\nApplication -> $app\nReadiness Probe -> $readinessprobe\nLiveness Probe -> $livenessprobe\nReplicas -> $replicas"
 	
-	/*def giturl = properties."repourl"
-	def pomdirectory = properties."pomdirectory"
-	def app = properties."app"
-	def readinessprobe = properties."readinessprobe"
-	def livenessprobe = properties."livenessprobe"
-	def replicas = properties."replicas"
-    println "RepoUrl -> $giturl\nPom Directory -> $pomdirectory\nApplication -> $app\nReadiness Probe -> $readinessprobe\nLiveness Probe -> $livenessprobe\nReplicas -> $replicas"
-	*/
     stage 'Checkout and Build'
-    build job: 'demo-checkoutandbuild', parameters: [[$class: 'StringParameterValue', name: 'GITURL', value: "$giturl"], [$class: 'StringParameterValue', name: 'POMDIRECTORY', value: "$pomdirectory"], [$class: 'StringParameterValue', name: 'APP', value: "$app"], [$class: 'StringParameterValue', name: 'TAG', value: "build${env.BUILD_NUMBER}"]]
+    build job: 'demo-checkoutandbuild', parameters: [[$class: 'StringParameterValue', name: 'GITURL', value: "$repourl"], [$class: 'StringParameterValue', name: 'POMDIRECTORY', value: "$pomdirectory"], [$class: 'StringParameterValue', name: 'APP', value: "$app"], [$class: 'StringParameterValue', name: 'TAG', value: "build${env.BUILD_NUMBER}"]]
     
     stage 'Push to Dev'
     build job: 'demo-dev', parameters: [[$class: 'StringParameterValue', name: 'TAG', value: "build${env.BUILD_NUMBER}"], [$class: 'StringParameterValue', name: 'APP', value: "$app"], [$class: 'StringParameterValue', name: 'READINESSPROBE', value: "$readinessprobe"], [$class: 'StringParameterValue', name: 'LIVENESSPROBE', value: "$livenessprobe"]]

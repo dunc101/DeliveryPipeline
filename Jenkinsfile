@@ -10,7 +10,8 @@ node {
 	sh "ls -lart ../workspace/osdemo4/"
 	sh "pwd"
 	def file = readFile("../workspace/osdemo4/deliverypipeline.properties")
-	println $file
+	println "$file"
+	sh "cat $file"
 	//def sr = new StringReader(file)
 	//def properties = new Properties()
 	//properties.load(sr)
